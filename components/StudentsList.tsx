@@ -1,3 +1,5 @@
+"use client";
+import React, { useState, useEffect } from "react";
 import RemoveBtn from "./RemoveBtn";
 import { HiPencilAlt } from "react-icons/hi";
 import Link from "next/link";
@@ -17,11 +19,45 @@ const getStudents = async () => {
     console.log("Error loading students: ", error);
   }
 };
-export default async function StudentsList() {
-  const { students } = await getStudents();
+
+const StudentsList = () => {
+  const [students, setStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const fetchStudents = async () => {
+      const data = await getStudents();
+      if (data) {
+        setStudents(data.students);
+      }
+    };
+
+    fetchStudents();
+  }, []);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredStudents = students.filter((student: any) => {
+    const searchValue = searchQuery.toLowerCase();
+    return (
+      student.name.toLowerCase().includes(searchValue) ||
+      student.details.toLowerCase().includes(searchValue) ||
+      student._id.toLowerCase().includes(searchValue) // Assuming other fields if any
+    );
+  });
+
   return (
-    <>
-      {students.map((s: any) => (
+    <div>
+      <input
+        type="text"
+        placeholder="Search students..."
+        value={searchQuery}
+        onChange={handleSearchChange}
+        className="mb-4 p-2 border rounded"
+      />
+      {filteredStudents.map((s: any) => (
         <div
           key={s._id}
           className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start"
@@ -38,6 +74,20 @@ export default async function StudentsList() {
           </div>
         </div>
       ))}
-    </>
+      <style jsx>{`
+        input {
+          display: block;
+          width: 100%;
+          max-width: 400px;
+          margin-bottom: 1rem;
+          padding: 0.5rem;
+          font-size: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+      `}</style>
+    </div>
   );
-}
+};
+
+export default StudentsList;
