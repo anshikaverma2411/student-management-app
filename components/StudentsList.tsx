@@ -44,9 +44,7 @@ const StudentsList = () => {
     return (
       student.fullName.toLowerCase().includes(searchValue) ||
       student.dateOfBirth.toLowerCase().includes(searchValue) ||
-      student.Class.toLowerCase().includes(searchValue) ||
-      student.subjects.toLowerCase().includes(searchValue) ||
-      student.percentage.toLowerCase().includes(searchValue) ||
+      student.class.toLowerCase().includes(searchValue) ||
       student.grade.toLowerCase().includes(searchValue)
     );
   });
@@ -60,25 +58,58 @@ const StudentsList = () => {
         onChange={handleSearchChange}
         className="mb-4 p-2 border rounded"
       />
+
       {filteredStudents.map((s: any) => (
         <div
           key={s._id}
-          className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start"
+          className="bg-white rounded-lg shadow-md overflow-hidden my-4 hover:shadow-lg transition-shadow duration-300"
         >
-          <div>
-            <h2 className="font-bold text-2xl">{s.fullName}</h2>
-            <div>{s.dateOfBirth}</div>
-            <div>{s.class}</div>
-            <div>{s.percentage}%</div>
-            <div>{s.subjects[0].name}</div>
-            <div>{s.subjects[0].marks}</div>
-            <div>{s.grade}</div>
-          </div>
-          <div className="flex gap-2">
-            <RemoveBtn id={s._id} />
-            <Link href={`/editStudent/${s._id}`}>
-              <HiPencilAlt size={24} />
-            </Link>
+          <div className="p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h2 className="font-bold text-2xl text-gray-800">
+                  {s.fullName}
+                </h2>
+                <div className="text-gray-600 mt-1">{s.dateOfBirth}</div>
+              </div>
+              <div className="flex gap-2">
+                <RemoveBtn id={s._id} />
+                <Link href={`/editStudent/${s._id}`}>
+                  <HiPencilAlt
+                    size={24}
+                    className="text-blue-500 hover:text-blue-700 transition-colors duration-200"
+                  />
+                </Link>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-gray-600">
+              <div>
+                <p>
+                  <span className="font-semibold">Class:</span> {s.class}
+                </p>
+                <p>
+                  <span className="font-semibold">Percentage:</span>{" "}
+                  {s.percentage}%
+                </p>
+                <p>
+                  <span className="font-semibold">Grade:</span> {s.grade}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold mb-1">Subjects:</p>
+                <div className="space-y-1">
+                  {s.subjects.map((subject, index) => (
+                    <div
+                      key={index}
+                      className="bg-gray-100 rounded p-1 text-sm"
+                    >
+                      <span className="font-medium">{subject.name}:</span>{" "}
+                      {subject.marks}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ))}

@@ -36,7 +36,7 @@ const withDB =
     await connectMongoDB();
     return handler(req, res);
   };
-export async function POST(request: any) {
+export async function POST(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
       fullName,
@@ -45,7 +45,7 @@ export async function POST(request: any) {
       subjects,
       percentage,
       grade,
-    } = await request.json();
+    } = req.body();
 
     await connectMongoDB();
 
@@ -74,39 +74,18 @@ export async function POST(request: any) {
 }
 
 export async function GET() {
-  await connectMongoDB();
-  const students = await Student.find();
-  return NextResponse.json({ students });
+  try {
+    await connectMongoDB();
+    const students = await Student.find();
+    return NextResponse.json({ students });
+  } catch (error) {
+    console.error("Error fetching students:", error);
+    return NextResponse.json(
+      { message: "Failed to fetch students" },
+      { status: 500 }
+    );
+  }
 }
-
-// // // GET /api/students
-// const getStudents = async (_req: NextApiRequest, res: NextApiResponse) => {
-//   try {
-//     const students = await Student.find();
-//     res.status(200).json({ students });
-//   } catch (error) {
-//     console.error("Error fetching students:", error);
-//     res.status(500).json({ message: "Failed to fetch students" });
-//   }
-// };
-
-// // DELETE /api/students/:id
-// const deleteStudent = async (req: NextApiRequest, res: NextApiResponse) => {
-//   try {
-//     const { id } = req.query;
-
-//     const deletedStudent = await Student.findByIdAndDelete(id as string);
-
-//     if (!deletedStudent) {
-//       return res.status(404).json({ message: "Student not found" });
-//     }
-
-//     res.status(200).json({ message: "Student deleted" });
-//   } catch (error) {
-//     console.error("Error deleting student:", error);
-//     res.status(500).json({ message: "Failed to delete student" });
-//   }
-// };
 
 export async function DELETE(request: any) {
   const id = request.nextUrl.searchParams.get("id");
@@ -116,14 +95,14 @@ export async function DELETE(request: any) {
 }
 
 // Export the API routes
-// export default withDB((req: NextApiRequest, res: NextApiResponse) => {
-//   if (req.method === "POST") {
-//     return postStudent(req, res);
-//   } else if (req.method === "GET") {
-//     return getStudents(req, res);
-//   } else if (req.method === "DELETE") {
-//     return deleteStudent(req, res);
-//   } else {
-//     res.status(405).json({ message: "Method Not Allowed" });
-//   }
-// });
+export default withDB((req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method === "POST") {
+    return POST(req, res);
+  } else if (req.method === "GET") {
+    return GET();
+  } else if (req.method === "DELETE") {
+    return DELETE(req);
+  } else {
+    res.status(405).json({ message: "Method Not Allowed" });
+  }
+});
