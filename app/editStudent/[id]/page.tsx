@@ -1,25 +1,38 @@
 import EditStudentForm from "@/components/EditStudentForm";
 
-// const getTopicById = async (id) => {
-//   try {
-//     const res = await fetch(`http://localhost:3000/api/students/${id}`, {
-//       cache: "no-store",
-//     });
+interface Student {
+  id: string;
+  name: string;
+  details: string;
+}
 
-//     if (!res.ok) {
-//       throw new Error("Failed to fetch topic");
-//     }
+const getStudentById = async (id: string): Promise<Student> => {
+  try {
+    const res = await fetch(`http://localhost:3000/api/students/${id}`, {
+      cache: "no-store",
+    });
 
-//     return res.json();
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+    if (!res.ok) {
+      throw new Error("Failed to fetch student");
+    }
 
-export default async function EditStudent() {
-  //   const { id } = params;
-  //   const { topic } = await getTopicById(id);
-  //   const { title, description } = topic;
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
 
-  return <EditStudentForm />;
+interface EditStudentProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function EditStudent({ params }: EditStudentProps) {
+  const { id } = params;
+  const student = await getStudentById(id);
+  const { name, details } = student;
+
+  return <EditStudentForm id={id} name={name} details={details} />;
 }

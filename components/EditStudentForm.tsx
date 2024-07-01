@@ -3,44 +3,58 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export default function EditStudentForm() {
-  //   const [newTitle, setNewTitle] = useState(title);
-  //   const [newDescription, setNewDescription] = useState(description);
+interface EditStudentFormProps {
+  id: string;
+  name: string;
+  details: string;
+}
 
-  //   const router = useRouter();
+export default function EditStudentForm({
+  id,
+  name,
+  details,
+}: EditStudentFormProps) {
+  const [newName, setNewName] = useState(name);
+  const [newDetail, setNewDetail] = useState(details);
 
-  //   const handleSubmit = async (e) => {
-  //     e.preventDefault();
+  const router = useRouter();
 
-  //     try {
-  //       const res = await fetch(`http://localhost:3000/api/topics/${id}`, {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-type": "application/json",
-  //         },
-  //         body: JSON.stringify({ newTitle, newDescription }),
-  //       });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  //       if (!res.ok) {
-  //         throw new Error("Failed to update topic");
-  //       }
+    try {
+      const res = await fetch(`http://localhost:3000/api/students/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ newName, newDetail }),
+      });
 
-  //       router.refresh();
-  //       router.push("/");
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+      if (!res.ok) {
+        throw new Error("Failed to update student");
+      }
+
+      router.push("/");
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <form className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <input
+        onChange={(e) => setNewName(e.target.value)}
+        value={newName}
         className="border border-slate-500 px-8 py-2"
         type="text"
         placeholder="Student Name"
       />
 
       <input
+        onChange={(e) => setNewDetail(e.target.value)}
+        value={newDetail}
         className="border border-slate-500 px-8 py-2"
         type="text"
         placeholder="Student Details"

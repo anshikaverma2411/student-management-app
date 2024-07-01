@@ -21,17 +21,17 @@ export default async function StudentsList() {
   const { students } = await getStudents();
   return (
     <>
-      {students.map((s) => (
+      {students.map((s: any) => (
         <div
           key={s._id}
           className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start"
         >
           <div>
-            <h2 className="font-bold text-2xl">{s.title}</h2>
+            <h2 className="font-bold text-2xl">{s.name}</h2>
             <div>{s.details}</div>
           </div>
           <div className="flex gap-2">
-            <RemoveBtn />
+            <RemoveBtn id={s._id} />
             <Link href={`/editStudent/${s._id}`}>
               <HiPencilAlt size={24} />
             </Link>
