@@ -42,9 +42,12 @@ const StudentsList = () => {
   const filteredStudents = students.filter((student: any) => {
     const searchValue = searchQuery.toLowerCase();
     return (
-      student.name.toLowerCase().includes(searchValue) ||
-      student.details.toLowerCase().includes(searchValue) ||
-      student._id.toLowerCase().includes(searchValue) // Assuming other fields if any
+      student.fullName.toLowerCase().includes(searchValue) ||
+      student.dateOfBirth.toLowerCase().includes(searchValue) ||
+      student.Class.toLowerCase().includes(searchValue) ||
+      student.subjects.toLowerCase().includes(searchValue) ||
+      student.percentage.toLowerCase().includes(searchValue) ||
+      student.grade.toLowerCase().includes(searchValue)
     );
   });
 
@@ -63,8 +66,13 @@ const StudentsList = () => {
           className="p-4 border border-slate-300 my-3 flex justify-between gap-5 items-start"
         >
           <div>
-            <h2 className="font-bold text-2xl">{s.name}</h2>
-            <div>{s.details}</div>
+            <h2 className="font-bold text-2xl">{s.fullName}</h2>
+            <div>{s.dateOfBirth}</div>
+            <div>{s.class}</div>
+            <div>{s.percentage}%</div>
+            <div>{s.subjects[0].name}</div>
+            <div>{s.subjects[0].marks}</div>
+            <div>{s.grade}</div>
           </div>
           <div className="flex gap-2">
             <RemoveBtn id={s._id} />

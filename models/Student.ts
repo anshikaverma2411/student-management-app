@@ -1,44 +1,28 @@
-// import mongoose, { Schema, Document } from "mongoose";
+// models/Student.ts
 
-// interface IStudent extends Document {
-//   fullName: string;
-//   age: number;
-//   dateOfBirth: Date;
-//   class: string;
-//   subjects: {
-//     subjectName: string;
-//     marks: number;
-//   }[];
-//   percentage: number;
-//   grade: string;
-// }
+import mongoose, { Schema, Document } from "mongoose";
 
-// const StudentSchema: Schema = new Schema({
-//   fullName: { type: String, required: true },
-//   age: { type: Number, required: true },
-//   dateOfBirth: { type: Date, required: true },
-//   class: { type: String, required: true },
-//   subjects: [
-//     {
-//       subjectName: { type: String, required: true },
-//       marks: { type: Number, required: true },
-//     },
-//   ],
-//   percentage: { type: Number, required: true },
-//   grade: { type: String, required: true },
-// });
+export interface IStudent extends Document {
+  fullName: string;
+  dateOfBirth: Date;
+  Class: string;
+  subjects: { name: string; marks: number }[];
+  percentage: number;
+  grade: string;
+}
 
-// const Student =
-//   mongoose.models.Student || mongoose.model<IStudent>("Student", StudentSchema);
-
-// export default Student;
-
-import mongoose, { Schema } from "mongoose";
-
-const studentSchema = new Schema(
+const studentSchema: Schema = new Schema(
   {
-    name: String,
-    details: String,
+    fullName: { type: String, required: true },
+    dateOfBirth: { type: Date, required: true },
+    Class: { type: String, required: true },
+    subjects: [{ name: String, marks: Number }],
+    percentage: { type: Number, required: true },
+    grade: {
+      type: String,
+      enum: ["A+", "A", "B", "C", "D", "F"],
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -46,6 +30,6 @@ const studentSchema = new Schema(
 );
 
 const Student =
-  mongoose.models.Student || mongoose.model("Student", studentSchema);
+  mongoose.models.Student || mongoose.model<IStudent>("Student", studentSchema);
 
 export default Student;
