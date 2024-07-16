@@ -44,6 +44,15 @@ const StudentsList = () => {
     return student.fullName.toLowerCase().includes(searchValue);
   });
 
+  const formatDate = (dateString: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
   return (
     <div>
       <input
@@ -65,7 +74,9 @@ const StudentsList = () => {
                 <h2 className="font-bold text-2xl text-gray-800">
                   {s.fullName}
                 </h2>
-                <div className="text-gray-600 mt-1">{s.dateOfBirth}</div>
+                <div className="text-gray-600 mt-1">
+                  DOB: {formatDate(s.dateOfBirth)}
+                </div>
               </div>
               <div className="flex gap-2">
                 <RemoveBtn id={s._id} />
@@ -80,7 +91,7 @@ const StudentsList = () => {
             <div className="grid grid-cols-2 gap-4 text-gray-600">
               <div>
                 <p>
-                  <span className="font-semibold">Class:</span> {s.class}
+                  <span className="font-semibold">Class:</span> {s.studentClass}
                 </p>
                 <p>
                   <span className="font-semibold">Percentage:</span>{" "}

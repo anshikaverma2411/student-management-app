@@ -223,6 +223,8 @@ export default function EditStudentForm({ student }: EditStudentFormProps) {
               onChange={(e) =>
                 handleSubjectChange(index, "marks", e.target.value)
               }
+              min={0}
+              max={100}
               placeholder="Marks"
               className="w-24 border rounded px-3 py-2"
               required
@@ -256,8 +258,11 @@ export default function EditStudentForm({ student }: EditStudentFormProps) {
           value={percentage}
           onChange={(e) => setPercentage(Number(e.target.value))}
           className="w-full border rounded px-3 py-2"
+          placeholder="Percentage"
+          step="0.1"
+          min={0}
+          max={100}
           required
-          step="any"
         />
       </div>
 

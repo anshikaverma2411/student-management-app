@@ -14,7 +14,10 @@ import mongoose, { Schema, Document } from "mongoose";
 const studentSchema: Schema = new Schema(
   {
     fullName: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
+    dateOfBirth: {
+      type: Date,
+      required: true,
+    },
     studentClass: { type: String, required: true },
     subjects: [
       {
