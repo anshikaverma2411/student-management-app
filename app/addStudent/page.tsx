@@ -30,7 +30,7 @@ export default function AddStudent() {
 
   const router = useRouter();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { fullName, dateOfBirth, studentClass, subjects, percentage, grade } =
@@ -50,14 +50,24 @@ export default function AddStudent() {
         body: JSON.stringify(studentData),
       });
 
-      if (res.ok) {
-        router.push("/");
-        router.refresh();
-      } else {
+      if (!res.ok) {
         const errorData = await res.json();
-        console.log(errorData);
         throw new Error(errorData.message || "Failed to create a student");
       }
+
+      const data = await res.json();
+      console.log("Response data:", data);
+      router.push("/");
+      router.refresh();
+
+      // if (res.ok) {
+      //   router.push("/");
+      //   // router.refresh();
+      // } else {
+      //   const errorData = await res.json();
+      //   console.log(errorData);
+      //   throw new Error(errorData.message || "Failed to create a student");
+      // }
     } catch (error) {
       console.error("Error adding student:", error);
       alert(
