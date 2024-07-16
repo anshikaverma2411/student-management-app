@@ -41,12 +41,7 @@ const StudentsList = () => {
 
   const filteredStudents = students.filter((student: any) => {
     const searchValue = searchQuery.toLowerCase();
-    return (
-      student.fullName.toLowerCase().includes(searchValue) ||
-      student.dateOfBirth.toLowerCase().includes(searchValue) ||
-      student.class.toLowerCase().includes(searchValue) ||
-      student.grade.toLowerCase().includes(searchValue)
-    );
+    return student.fullName.toLowerCase().includes(searchValue);
   });
 
   return (
