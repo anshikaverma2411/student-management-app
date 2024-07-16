@@ -41,15 +41,15 @@ export default function EditStudentForm({ student }: EditStudentFormProps) {
 
   const router = useRouter();
 
-  // useEffect(() => {
-  //   // This effect will run when the component mounts and whenever the student prop changes
-  //   setFullName(student.fullName);
-  //   setDateOfBirth(student.dateOfBirth);
-  //   setStudentClass(student.studentClass);
-  //   setSubjects(student.subjects);
-  //   setPercentage(student.percentage);
-  //   setGrade(student.grade);
-  // }, [student]);
+  useEffect(() => {
+    // This effect will run when the component mounts and whenever the student prop changes
+    setFullName(student.fullName);
+    setDateOfBirth(student.dateOfBirth);
+    setStudentClass(student.studentClass);
+    setSubjects(student.subjects);
+    setPercentage(student.percentage);
+    setGrade(student.grade);
+  }, [student]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

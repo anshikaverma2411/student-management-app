@@ -97,5 +97,19 @@ export default async function EditStudent({ params }: EditStudentProps) {
 
   // return <EditStudentForm student={student} />;
 
-  return <EditStudentForm student={student} />;
+  try {
+    const student = await getStudentById(id);
+    console.log("Fetched student data:", student);
+
+    if (!student) {
+      return <div>Student not found</div>;
+    }
+
+    return <EditStudentForm student={student} />;
+  } catch (error) {
+    console.error("Error fetching student:", error);
+    return <div>Error loading student data</div>;
+  }
+
+  // return <EditStudentForm student={student} />;
 }
